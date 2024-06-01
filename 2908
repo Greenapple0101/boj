@@ -1,0 +1,26 @@
+#include <iostream>
+#include <algorithm>
+#include <string>
+
+int main() {
+    std::string a, b;
+    // 두 수를 입력받습니다.
+    std::cin >> a >> b;
+
+    // 숫자를 뒤집습니다.
+    std::reverse(a.begin(), a.end());
+    std::reverse(b.begin(), b.end());
+
+    // 뒤집힌 숫자를 정수로 변환합니다.
+    int a_int = std::stoi(a);
+    int b_int = std::stoi(b);
+
+    // 두 숫자 중 더 큰 수를 출력합니다.
+    if (a_int > b_int) {
+        std::cout << a_int << std::endl;
+    } else {
+        std::cout << b_int << std::endl;
+    }
+
+    return 0;
+}
