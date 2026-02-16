@@ -1,0 +1,395 @@
+순간 든 생각들
+일단 국경선이 어디까지 열려 있는지 알아야하고
+한번 인구 이동을 시키고
+다른애들이랑 비교를 했을때 인구이동을 또 할 만한지 알아야함
+
+국경선이 어디까지 열려있는지 아는게 핵심
+간선으로 저장하는게 좋을까
+간선이 무방향간선저장은 뭘로하지? 그리고 어디서부터 어디까지 연결되었는지
+한번에 아는 알고리즘이 있나
+그래프로 저장?
+
+>>>>>>복잡하게 생각하지말고 bfs로 접근.
+
+저번에 다리 만들기 문제에서 섬 찾던 것처럼하면 될듯
+1번 섬
+2번 섬 이렇게 나누고
+한번에 섬 싹 인구이동 시키고
+
+다음판 가기
+
+함수를 어떻게 쪼개냐
+
+인구 이동 확인 함수
+bfs로 연합찾고 인구수 업데이트
+인구 갱신
+>>>>>>>>이게 말이 쉽지...
+일단 코드 뼈대 부터 만들어보자
+
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <utility>
+using namespace std;
+vector<vector<int>> population;
+vector<vector<int>> population2;
+vector<vector<int>> visited;
+int L,R;
+int satisfy=0;
+int ans=0;
+void bfs(int i, int j,int N) {
+    vector<vector<int>> check(N, vector<int>(N,0));
+    int sum=0 cnt=1;
+    queue<pair<int,int>> q;
+    q.push({i,j});
+    while (!q.empty()){
+        int ci=q.front().first;
+        int cj=q.front().second;
+        int di[4]={0,0,-1,1};
+        int dj[4]={1,-1,0,0};
+        for (int k=0;k<4;k++) {
+            int ni=ci+di[k];
+            int nj=cj+dj[k];
+            if (0<=ni && ni<=N-1 && nj<=N-1 && 0<=nj && !visited[ni][nj]) {
+                q.push({ni,nj});
+                visited[ni][nj]=1;
+                int d=population[ci][cj]-population[ni][nj];
+                if (d<=R && L<=d) {
+                    cnt++;
+                    sum+=population[ni][nj];
+                    check=1;
+                }
+            }
+        }
+    }
+    if (cnt==0) {
+        satisfy=1;
+    }
+    for (int i=0; i<N;i++) {
+        for (int j=0;j<N;j++) {
+            if (check[i][j]) {
+                population2[i][j]=sum/cnt;
+            }
+        }
+    }
+}
+
+
+int main() {
+    ios::sync_with_stdio(0);
+    cin.tie(NULL);
+    int N, L, R;
+    cin >> N >> L >> R;
+    population.assign(N, vector<int>(N));
+    population2.assign(N, vector<int>(N));
+    visited.assign(N,vector<int>(N,0));
+    for(int i=0; i<N; i++) {
+        for(int j=0; j<N; j++) {
+            cin >> population[i][j];
+            cin >> population2[i][j];
+        }
+    }
+    while (!satisfy) {
+        //방문안한 점 기준으로 bfs 돌리기
+        for (int i=0; i<N;i++) {
+            for (int j=0;j<N;j++) {
+                if (!visited[i][j]) {
+                    bfs(i,j,N);
+                    ans++;
+                }
+            }
+        }
+        swap(population,population2);
+        visited.assign(N,vector<int>(N,0));
+    }
+
+
+    cout<<ans;
+
+    return 0;
+}
+
+대충 여기까지옴.
+어떤 논리적 오류들이 있을까
+일단 컴파일 에러들부터 잡아보자
+사소하게 몇개 잡음.
+
+논리적 오류 1
+1. 푸쉬자리 잘못 잡음
+2.     vector<vector<int>> check(N, vector<int>(N,0));
+이거 그냥 뒤로 푸쉬
+3. ans 자리 옮기기
+
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <utility>
+using namespace std;
+vector<vector<int>> population;
+vector<vector<int>> population2;
+vector<vector<int>> visited;
+int L,R;
+int satisfy=0;
+int ans=0;
+void bfs(int i, int j,int N) {
+    vector<pair<int,int>> check;
+    int sum=0, cnt=1;
+    queue<pair<int,int>> q;
+    q.push({i,j});
+    while (!q.empty()){
+        int ci=q.front().first;
+        int cj=q.front().second;
+        int di[4]={0,0,-1,1};
+        int dj[4]={1,-1,0,0};
+        for (int k=0;k<4;k++) {
+            int ni=ci+di[k];
+            int nj=cj+dj[k];
+            if (0<=ni && ni<=N-1 && nj<=N-1 && 0<=nj && !visited[ni][nj]) {
+                int d=population[ci][cj]-population[ni][nj];
+                if (d<=R && L<=d) {
+                    q.push({ni,nj});
+                    visited[ni][nj]=1;
+                    cnt++;
+                    sum+=population[ni][nj];
+                    check.push_back({ni,nj});
+                }
+            }
+        }
+    }
+    if (cnt==1) {
+        satisfy=1;
+    }
+    for (int i=0; i<check.size();i++) {
+        int y=check.front().first;
+        int x=check.front().second;
+        population[y][x]=sum/cnt;
+    }
+}
+
+
+int main() {
+    ios::sync_with_stdio(0);
+    cin.tie(NULL);
+    int N, L, R;
+    cin >> N >> L >> R;
+    population.assign(N, vector<int>(N));
+    population2.assign(N, vector<int>(N));
+    visited.assign(N,vector<int>(N,0));
+    for(int i=0; i<N; i++) {
+        for(int j=0; j<N; j++) {
+            cin >> population[i][j];
+            cin >> population2[i][j];
+        }
+    }
+    while (!satisfy) {
+        //방문안한 점 기준으로 bfs 돌리기
+        for (int i=0; i<N;i++) {
+            for (int j=0;j<N;j++) {
+                if (!visited[i][j]) {
+                    bfs(i,j,N);
+                }
+            }
+        }
+        ans++;
+        swap(population,population2);
+        visited.assign(N,vector<int>(N,0));
+    }
+
+
+    cout<<ans;
+
+    return 0;
+}
+
+이정도 나옴.
+1. 차이는 절댓값이어야 함
+2. 시작인구 빠짐.
+
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <utility>
+using namespace std;
+vector<vector<int>> population;
+vector<vector<int>> population2;
+vector<vector<int>> visited;
+int L,R;
+int satisfy=0;
+int ans=0;
+void bfs(int i, int j,int N) {
+    vector<pair<int,int>> check;
+    int sum=population[i][j], cnt=1;
+    visited[i][j]=1;
+    check.push_back({i,j});
+    queue<pair<int,int>> q;
+    q.push({i,j});
+    while (!q.empty()){
+        int ci=q.front().first;
+        int cj=q.front().second;
+        int di[4]={0,0,-1,1};
+        int dj[4]={1,-1,0,0};
+        for (int k=0;k<4;k++) {
+            int ni=ci+di[k];
+            int nj=cj+dj[k];
+            if (0<=ni && ni<=N-1 && nj<=N-1 && 0<=nj && !visited[ni][nj]) {
+                int d=population[ci][cj]-population[ni][nj];
+                if (abs(d)<=R && L<=abs(d)) {
+                    q.push({ni,nj});
+                    visited[ni][nj]=1;
+                    cnt++;
+                    sum+=population[ni][nj];
+                    check.push_back({ni,nj});
+                }
+            }
+        }
+    }
+    if (cnt==1) {
+        satisfy=1;
+    }
+    for (int i=0; i<check.size();i++) {
+        int y=check[i].first;
+        int x=check[i].second;
+        population[y][x]=sum/cnt;
+    }
+}
+
+
+int main() {
+    ios::sync_with_stdio(0);
+    cin.tie(NULL);
+    int N, L, R;
+    cin >> N >> L >> R;
+    population.assign(N, vector<int>(N));
+    population2.assign(N, vector<int>(N));
+    visited.assign(N,vector<int>(N,0));
+    for(int i=0; i<N; i++) {
+        for(int j=0; j<N; j++) {
+            int a;
+            cin>>a;
+            population[i][j]=a;
+            population2[i][j]=a;
+        }
+    }
+    while (!satisfy) {
+        //방문안한 점 기준으로 bfs 돌리기
+        for (int i=0; i<N;i++) {
+            for (int j=0;j<N;j++) {
+                if (!visited[i][j]) {
+                    bfs(i,j,N);
+                }
+            }
+        }
+        ans++;
+        swap(population2,population);
+        visited.assign(N,vector<int>(N,0));
+    }
+
+
+    cout<<ans;
+
+    return 0;
+}
+
+여기서 부터가 문제.
+일단 satisfy 로직도 전면 수정 어디서 부터 해야하나 싶고
+population2를 쓴건... 날짜마다 바뀌게 하려고 한거였는데
+어차피 visited가 날마다 갱신되는거면 괜춘
+
+satisfy 로직을 어떻게 고칠지 생각을 해보자
+그니까 문제 조건이 bfs가 한번이라도 움직이면 true 반환인건데
+
+if (bfs(i, j, N)) is_moved = true;
+이 문장과
+bfs함수 내부에서 bool을 반영해서 조건을 만족할 시 true를 나오게 하는 기능 추가.
+return 은 늘 언제나 마지막에 오는것. 항상 return은 반영해야함
+
+
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <utility>
+using namespace std;
+vector<vector<int>> population;
+vector<vector<int>> population2;
+vector<vector<int>> visited;
+int L,R;
+int satisfy=0;
+int ans=0;
+bool bfs(int i, int j,int N) {
+    vector<pair<int,int>> check;
+    int sum=population[i][j], cnt=1;
+    visited[i][j]=1;
+    check.push_back({i,j});
+    queue<pair<int,int>> q;
+    q.push({i,j});
+    while (!q.empty()){
+        int ci=q.front().first;
+        int cj=q.front().second;
+        int di[4]={0,0,-1,1};
+        int dj[4]={1,-1,0,0};
+        for (int k=0;k<4;k++) {
+            int ni=ci+di[k];
+            int nj=cj+dj[k];
+            if (0<=ni && ni<=N-1 && nj<=N-1 && 0<=nj && !visited[ni][nj]) {
+                int d=population[ci][cj]-population[ni][nj];
+                if (abs(d)<=R && L<=abs(d)) {
+                    q.push({ni,nj});
+                    visited[ni][nj]=1;
+                    cnt++;
+                    sum+=population[ni][nj];
+                    check.push_back({ni,nj});
+                }
+            }
+        }
+    }
+
+    for (int i=0; i<check.size();i++) {
+        int y=check[i].first;
+        int x=check[i].second;
+        population[y][x]=sum/cnt;
+    }
+    if (cnt>1) {
+        return true;
+    }
+    else return false;
+}
+
+
+int main() {
+    ios::sync_with_stdio(0);
+    cin.tie(NULL);
+    int N, L, R;
+    cin >> N >> L >> R;
+    population.assign(N, vector<int>(N));
+    population2.assign(N, vector<int>(N));
+    visited.assign(N,vector<int>(N,0));
+    for(int i=0; i<N; i++) {
+        for(int j=0; j<N; j++) {
+            int a;
+            cin>>a;
+            population[i][j]=a;
+        }
+    }
+    while (true) {
+        bool is_moved =false;
+        visited.assign(N,vector<int>(N,0)); //날마다 갱신
+        //방문안한 점 기준으로 bfs 돌리기
+        for (int i=0; i<N;i++) {
+            for (int j=0;j<N;j++) {
+                if (!visited[i][j]) {
+                    if (bfs(i,j,N)) is_moved =true;
+                }
+            }
+        }
+        if (!is_moved) break;
+        ans++;
+    }
+
+
+    cout<<ans;
+
+    return 0;
+}
+
+아 시간초과 뜨네
+전역변수 선언하면 다시 선언하지 말것. 이건 진짜 명심
