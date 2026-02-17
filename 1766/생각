@@ -1,0 +1,55 @@
+위상정렬 위상정렬
+#include <queue>
+#include <vector>
+#include <iostream>
+
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    int N, M;
+    cin >> N >> M;
+    vector<vector<int>> problems;
+    vector<int> count(N);
+    for (int i = 0; i < M; ++i) {
+        int A, B;
+        cin >> A >> B;
+        problems[A].push_back(B);
+        count[B]++;
+    }
+    queue<int> q;
+    for (int i=0;i<N;i++) {
+        if (count[i]==0) {
+            q.push(i);
+        }
+    }
+    while (!q.empty()) {
+        int curr=q.front();
+        cout<<curr;
+        q.pop();
+        for (int val:problems[curr]) {
+            count[val]--;
+            if (count[val]==0) {
+                q.push(val);
+            }
+        }
+    }
+
+    return 0;
+}
+
+왜 세그먼트 오류가 날까
+난 취업을 언제 할까
+1부터 넣는거 깜빡했네
+
+    vector<vector<int>> problems;
+ 이거 사이즈 안넣었다는데
+아니
+화나넹
+// 이렇게 선언과 동시에 사이즈를 잡아주면 해결된대
+vector<vector<int>> problems(N + 1);
+    vector<int> problems[100001];
+그냥 이거 쓰고 말지 퉤ㅜ테ㅔ퉤퉤퉤ㅔ
+
+아니 우선순위 큐 써야하는 문제 였음...
+우선순위큐 공부 깔짝하고 와야곘다...
