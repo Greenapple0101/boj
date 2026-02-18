@@ -16,20 +16,20 @@ int main() {
         problems[A].push_back(B);
         count[B]++;
     }
-    queue<int> q;
+    priority_queue<int, vector<int>, greater<int>> pq;
     for (int i=1;i<N+1;i++) {
         if (count[i]==0) {
-            q.push(i);
+            pq.push(i);
         }
     }
-    while (!q.empty()) {
-        int curr=q.front();
+    while (!pq.empty()) {
+        int curr=pq.top();
         cout<<curr<<" ";
-        q.pop();
+        pq.pop();
         for (int val:problems[curr]) {
             count[val]--;
             if (count[val]==0) {
-                q.push(val);
+                pq.push(val);
             }
         }
     }
