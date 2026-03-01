@@ -1,0 +1,114 @@
+import sys
+input=sys.stdin.readline
+sys.setrecursionlimit(10**6)
+
+n=int(input())
+
+inorder=list(map(int,input().split()))
+postorder=list(map(int,input().split()))
+preorder=[]
+pos=[0]*(n+1)
+for i in range(n):
+  pos[inorder[i]]=i
+
+def dfs(inorder,post_start,post_end):
+  root=postorder[post_end]
+
+  if not inorder:
+    return
+
+  if(len(inorder)==1):
+    print(inorder[0], end=' ')
+    return
+
+  for node in inorder:
+    if(node==root):
+      r=inorder.index(root)
+      left_tree_inorder=inorder[:r]
+      right_tree_inorder=inorder[r+1:]
+      break
+
+  print(root, end=' ')
+  dfs(left_tree_inorder,post_start,post_start+len(left_tree_inorder)-1)
+  dfs(right_tree_inorder,post_start+len(left_tree_inorder),post_end-1)
+
+dfs(inorder,0,n-1)
+
+일단 root 계속 갱신 안해서 첫번째 오류남
+갱신을 어떤식으로 해주냐면 그냥 직관적으로 해줌. 포스트오더는 뭉탱이, 뭉탱이, 루트 일테니까
+왼쪽뭉탱이 첫번째
+오른쪽뭉탱이 두번째
+각각 머리로 그림
+그래서 갱신하는 방향으로 바꿨더니 이젠 메모리 오류가 남. 이래서 c++ 쓰는구나..? 아닌가
+
+그냥 로직을 아예 새로 짜야함.
+슬라이싱을 없애면 될거 같은데
+인덱스만 주는 식으
+
+import sys
+input=sys.stdin.readline
+sys.setrecursionlimit(10**6)
+
+n=int(input())
+
+inorder=list(map(int,input().split()))
+postorder=list(map(int,input().split()))
+preorder=[]
+pos=[0]*(n+1)
+for i in range(n):
+  pos[inorder[i]]=i
+
+path=[]
+
+def dfs(in_start,in_end,post_start,post_end):
+  root=postorder[post_end]
+  r=pos[root]
+
+  if(in_end==in_start):
+    path.append(in_end)
+    return
+
+  len_left_tree=r-in_start
+
+  path.append(r)
+  dfs(in_start,r-1,post_start,post_start+len_left_tree-1)
+  dfs(r+1,in_end,post_start+len_left_tree,post_end-1)
+
+  return path
+dfs(0,n-1,0,n-1)
+for i in range(len(path)):
+  print(inorder[path[i]], end=' ')
+
+
+이것 역시 메모리 초과. c++하고 싶다 그냥 코테 몇개 끝나면 바로 c++ 해야겠다
+
+
+import sys
+input=sys.stdin.readline
+sys.setrecursionlimit(10**6)
+
+n=int(input())
+
+inorder=list(map(int,input().split()))
+postorder=list(map(int,input().split()))
+preorder=[]
+pos=[0]*(n+1)
+for i in range(n):
+  pos[inorder[i]]=i
+def dfs(in_start,in_end,post_start,post_end):
+  root=postorder[post_end]
+  r=pos[root]
+
+  if in_start > in_end or post_start > post_end:
+    return
+
+  len_left_tree=r-in_start
+
+  print(root, end=' ')
+  dfs(in_start,r-1,post_start,post_start+len_left_tree-1)
+  dfs(r+1,in_end,post_start+len_left_tree,post_end-1)
+
+dfs(0,n-1,0,n-1)
+
+
+프린트는 한번만 쓰도록. 어차피 위에것들 다 틀림.
