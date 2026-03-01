@@ -9,7 +9,7 @@ for _ in range(1,N):
   adj[p].append((c,g))
   adj[c].append((p,g))
 
-max_gram=-1e9
+max_gram=0
 gram=0
 lst=[]
 idx=0
