@@ -1,0 +1,256 @@
+일단 현재 크루스칼이랑 bfs 이용해야 겠다는 생각이 듦
+dist를 짧은 순서대로 나열하고
+그리디 식으로 가중치가 가장 짧은 애부터 확인하고.
+모든 점을 최적화해서 연결시키면.
+루트 하나에 섬이 다 연결된 꼴.
+암튼 다 연결 시켰을때 거리의 합이 최소인걸 구하는 방식
+
+함수가 뭐가 필요하냐
+섬끼리의 거리 구하는 함수(일단 섬이 뭐뭐 있는지 알아야함. bfs)
+그다음에 u,v,dist 포함하는 구조체 만드는데
+u,v는 시작이랑 끝 이 달라야 하므로 순열의 개수만큼 있음
+
+이제 구현을 어떻게 하냐...
+
+어떻게 다리를 건설해서 간선 리스트를 만드느냐<<<<이게 제일 핵심
+그다음에는 알고리즘 돌리기만 하면 끝.
+
+bfs로 1인 부분 만나면 장소 저장하는 벡터랑 함수 만들까? 이거가 함수 하나
+그러고 이제 섬끼리 거리 재는 함수. 브루트 포스로 하면 너무 복잡하니까..
+같은 열이나 행에 있는 점을 찾아서 거리를 일직선으로 잰다?
+그 중 가장 짧은 거리 고르기?는 아님. 그냥 후보를 다 담자.
+
+일단 이정도 설계면 코드 짜기 시작해도 될듯. 2/14 10:16
+
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <queue>
+#include <utility>
+using namespace std;
+int N,M;
+vector<vector<int>> v;
+vector<vector<pair<int,int>> island[7];
+int cnt=1;
+queue<pair<int,int>> q;
+//섬 정보 저장
+void bfs(int i, int j, int n) {
+    vector<vector<int>> v(N,vector<int>(M,0));
+    q.push(make_pair(i,j));
+    island[n].push_back(make_pair(i,j));
+    visited[i][j]=1;
+    int dy[4]={0,0,-1,1};
+    int dx[4]={1,-1,0,0};
+    while (!q.empty()) {
+        int y=q.front().first;
+        int x=q.front().second;
+        q.pop();
+        for (int i=0;i<4;i++) {
+            int ny=y+dy[i];
+            int nx=x+dx[i];
+            if (ny<N && ny>0 && nx<M && nx>0 && !visited[ny][nx]) {
+                q.push(make_pair(ny,nx));
+                island[n].push_back(make_pair(ny,nx));
+                visited[ny][nx]=1;
+            }
+        }
+    }
+}
+
+<일단 섬 정보 저장하는 함수까지 만든 상태> 2/14 10:33
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <queue>
+#include <utility>
+using namespace std;
+int N,M;
+vector<vector<int>> v(N,vector<int>(M));
+vector<vector<pair<int,int>> island[7];
+int cnt=0;
+queue<pair<int,int>> q;
+//섬 정보 저장
+void bfs(int i, int j, int n) {
+    vector<vector<int>> v(N,vector<int>(M,0));
+    q.push(make_pair(i,j));
+    island[n].push_back(make_pair(i,j));
+    visited[i][j]=1;
+    int dy[4]={0,0,-1,1};
+    int dx[4]={1,-1,0,0};
+    while (!q.empty()) {
+        int y=q.front().first;
+        int x=q.front().second;
+        q.pop();
+        for (int i=0;i<4;i++) {
+            int ny=y+dy[i];
+            int nx=x+dx[i];
+            if (ny<N && ny>0 && nx<M && nx>0 && !visited[ny][nx]) {
+                q.push(make_pair(ny,nx));
+                island[n].push_back(make_pair(ny,nx));
+                visited[ny][nx]=1;
+            }
+        }
+    }
+}
+
+
+int main(){
+    ios::sync_with_stdio(0);
+    cin.tie(NULL);
+    cin>>N>>M;
+    for(int i=0;i<N;i++) {
+        for(int j=0;j<M;j++){
+            int a;
+            cin>>a;
+            a=v[i][j];
+        }
+    }
+    for (int i=0;i<N;i++)
+        for (int j=0;j<M;j++)
+            if (v[i][j]==1) {
+                bfs(i,j,cnt);
+                cnt++;
+                    }
+            }
+    return 0;
+}
+
+
+설계 자체는 틀리지 않았지만
+문법이 익숙치 않아 여러개의 오류가 남
+
+1.배열 크기 선언 오류.
+전역에서 배열을 N,M으로 선언하면 안돼
+배열은 전역에서 무조건 이름까지만 선언하자.
+내부에서 크기도 선언하자.
+
+2.bfs 내부에서 visited 다시 선언하면
+함수가 끝날때마다 방문기록 사라짐.
+보니까 방문배열 선언을 안했네.
+
+/////
+고치고 나니 선언 문제 다시 벡터 선언문제 발생
+////
+main에서 새로 선언하지 말고 resize를 해야함.
+assign 함수 쓸생각을 하자.
+
+<일단 함수 하나 완성. 10:44>
+
+이제 어떻게 섬간의 길이를 재나요?
+머리가 아프지만
+일단 island[] 주머니에 섬들의 좌표가 들어있을것.
+전역 선언했으니. 가볍게 void 로 해서 뱉거나
+일단 이중포문...하고 island 비어있으면 패스하고
+그런식으로 짝을 다 만들어서 거리를 검사하고 바로 구조체에 넣자.
+일단 구조체부터 짜고
+이중포문 만들고 그안에 함수넣자.
+함수 설계는 그러고하기
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <queue>
+#include <utility>
+using namespace std;
+int N,M;
+vector<vector<int>> v;
+vector<pair<int,int>> island[7];
+vector<vector<int>> visited;
+int cnt=0;
+queue<pair<int,int>> q;
+struct Edge {
+    int u,v,dist;
+    bool operator<(const Edge& other) const {
+        return dist <other.dist;
+    }
+};
+//섬 정보 저장
+void bfs(int i, int j, int n) {
+    q.push(make_pair(i,j));
+    island[n].push_back(make_pair(i,j));
+    visited[i][j]=1;
+    int dy[4]={0,0,-1,1};
+    int dx[4]={1,-1,0,0};
+    while (!q.empty()) {
+        int y=q.front().first;
+        int x=q.front().second;
+        q.pop();
+        for (int i=0;i<4;i++) {
+            int ny=y+dy[i];
+            int nx=x+dx[i];
+            if (ny<N && ny>=0 && nx<M && nx>=0 && !visited[ny][nx] && v[ny][nx]==1) {
+                q.push(make_pair(ny,nx));
+                island[n].push_back(make_pair(ny,nx));
+                visited[ny][nx]=1;
+            }
+        }
+    }
+}
+
+//섬간의 길이 재기
+int dist(int i, int j) {
+
+
+
+
+}
+
+
+int main(){
+    ios::sync_with_stdio(0);
+    cin.tie(NULL);
+    cin>>N>>M;
+    v.assign(N,vector<int>(M));
+    visited.assign(N,vector<int>(M,0));
+    vector<Edge> edges;
+    for(int i=0;i<N;i++) {
+        for(int j=0;j<M;j++){
+            int a;
+            cin>>a;
+            v[i][j]=a;
+        }
+    }
+    for (int i=0;i<N;i++)
+        for (int j=0;j<M;j++)
+            if (v[i][j]==1 && !visited[i][j]) {
+                bfs(i,j,cnt);
+                cnt++;
+                    }
+    for (int i=0;i<7;i++) {
+        if (island[i].empty()) continue;
+        for (int j=0;j<7;j++) {
+            if (island[j].empty()) continue;
+            if (i==j) continue;
+                edges.push_back({i,j,dist(i,j)});
+        }
+    }
+    return 0;
+}
+
+10:54 오류 하나. 리스트.empty() 쓸수 있다
+      오류 둘. bfs안에서 그걸 안함. 그 1인지 확인하는거
+
+
+11:26까지 잡생각+설계 못해서 스트레스 받음..브루트포스 아닌거 같은데 등
+
+dist재는거 생각못하겠어서 얼타고 있었는데 결국 브루트포스 였음
+경계만 잘라야하나 고민고민하다..
+다 꺼내는 거였음
+
+11:26-...ㅎㅎ
+
+마킹해서 섬번호 매기기
+모든 섬이 연결되었는지 확인은 간선 수=노드 수 -1 로
+
+
+
+
+
+
+
+
+
+
+
