@@ -11,8 +11,3 @@ Makefile
 cmake_install.cmake
 install_manifest.txt
 compile_commands.json
-
-# 실행 파일 (이미지상의 SWEA 등)
-SWEA
-*.exe
-*.out
