@@ -1,0 +1,123 @@
+T = int(input())
+
+for tc in range(1, T+1):
+    N = int(input())
+    grid = [list(map(int, input().split())) for _ in range(N)]
+    check = [[0]*N for _ in range(N)]  # 술래가 둘일 경우 겹치는 감시구역을 빼야합니다
+    wall = []
+    man = []
+    for i in range(N):  # 술래랑 벽 좌표 넣기
+        for j in range(N):
+            if (grid[i][j] == 1):
+                wall.append([i, j])
+            if (grid[i][j] == 2):
+                man.append([i, j])
+
+    dy = [0, 0, 1, -1]
+    dx = [1, -1, 0, 0]
+    grid1 = list(zip(*grid))  # 세로로 세기 위해
+    count = 0  # 바깥에 선언해야합니다
+    for val in man:
+        i = val[0]
+        row = grid[i]
+        k = val[1]
+        while (1):
+            k += 1
+            if (k >= N):
+                break
+            if (check[i][k]):
+                continue
+            if (row[k] == 1):
+                break
+            count += 1
+            check[i][k] = 1
+        k = val[1]
+        while (1):
+            k -= 1
+            if (k < 0):
+                break
+            if (check[i][k]):
+                continue
+            if (row[k] == 1):
+                break
+            count += 1
+            check[i][k] = 1
+
+    for val in man:
+        i = val[1]
+        row = grid1[i]
+
+        k = val[0]
+
+        while (1):
+            k += 1
+            if (k >= N):
+                break
+            if (check[k][i]):
+                continue
+            if (row[k] == 1):
+                break
+            count += 1
+            check[k][i] = 1
+        k = val[0]
+
+        while (1):
+            k -= 1
+            if (k < 0):
+                break
+            if (check[k][i]):
+                continue
+            if (row[k] == 1):
+                break
+            count += 1
+            check[k][i] = 1
+
+    ans = (N*N)-len(wall)-count-len(man)
+
+    print(f"#{tc} {ans}")
+
+1. count 꼬인듯
+2. 아 2일때 안세는거 로직에서 뺌
+
+import sys
+sys.stdin = open("algo1_sample_in.txt")
+
+T = int(input())
+
+for case in range(1, T+1):
+    row_col = int(input())
+    # 가로 세로 길이
+    hide_map = [list(map(int, input().split())) for _ in range(row_col)]
+    # 지도 입력
+    catcher = []
+    # 술래 좌표 저장
+    for i in range(row_col):
+        for j in range(row_col):
+            if hide_map[i][j] == 2:
+                catcher.append((i, j))
+
+    dr = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+    for y, x in catcher:
+        for dy, dx in dr:
+            for mul in range(1, row_col):
+                cy = (dy*mul) + y
+                cx = (dx*mul) + x
+                if not(0 <= cy < row_col and 0 <= cx < row_col):
+                    continue
+                if hide_map[cy][cx] == 1:
+                    # 벽을 만나면 감시 영역 표시 중단
+                    break
+                hide_map[cy][cx] = "x"
+                # 감시 구역을 "x" 로 변경하여 표시한다
+
+    answer = 0
+    for i in range(row_col):
+        for j in range(row_col):
+            if hide_map[i][j] == 0:
+                # 0 으로 그대로 남은 구역, 즉 감시 피하는 통로 칸 확인 시 카운트 증가
+                answer += 1
+
+    print(f"#{case} {answer}")
+
+다른사람코드. 감시구역을 x로 변경한다음에 0을 세면 됨
+중복해서 x찍혀도 되기때문에 안전함
