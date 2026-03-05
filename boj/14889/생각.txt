@@ -1,0 +1,152 @@
+n = int(input())
+score=[list(map(int,input().split())) for _ in range(n)]
+num=[i for i in range(n)]
+lst=[]
+lst2=[0]*2
+visited=[0]*n
+visited2=[0]*n
+ans=1e9
+def dfs(level):
+  global summ,ans
+  if(level==n//2):
+    lst3=[]
+    for k in range(n):
+      if(visited[k]==0):
+        lst3.append(num[k])
+    summ=0
+    dfs2(0,lst)
+    a=summ
+    summ=0
+    dfs2(0,lst3)
+    b=summ
+    ans=min(ans,abs(a-b))
+  for i in range(n):
+    if(visited[i]):continue
+    lst.append(num[i])
+    visited[i]=1
+    dfs(level+1)
+    lst.pop(-1)
+    visited[i]=0
+
+def dfs2(level2,lstt):
+  global summ
+  if(level2==2):
+    summ+=score[lst2[0]][lst2[1]]
+    return
+  for i in range(n//2):
+    if(visited2[i]):continue
+    lst2[level2]=lstt[i]
+    visited2[i]=1
+    dfs2(level2+1,lstt)
+    visited2[i]=0
+
+dfs(0)
+print(ans)
+
+1.또 시간초과남(이중 dfs씀)
+2.dfs 하나로 합치자
+3.visited에 1,0 배열하는걸 dfs로 하고 레벨 끝까지 갔을때 합끼리 빼서 절댓값
+
+n = int(input())
+score=[list(map(int,input().split())) for _ in range(n)]
+num=[i for i in range(n)]
+scorea=0
+visited=[0]*n
+ans=0
+minn=1e9
+def dfs(level):
+  global minn,ans
+  if(level==n//2):
+    scorea=0
+    scoreb=0
+    for i in range (n):
+      for j in range (n):
+        if(visited[i] and visited[j]):
+          scorea+=score[i][j]
+        if(visited[i]==0 and visited[j]==0):
+          scoreb+=score[i][j]
+    ans=abs(scorea-scoreb)
+    minn=min(ans,minn)
+
+
+  for i in range(n):
+
+    if(visited[i]):continue
+    visited[i]=1
+    dfs(level+1)
+    visited[i]=0
+
+  return minn
+print(dfs(0))
+
+1. 또 시간 초과 남
+2. 조합으로 풀어야하는데 순열로 풀어서 그럼
+3. 너무 느리다.. 이래서 c++하는구나
+
+n = int(input())
+score=[list(map(int,input().split())) for _ in range(n)]
+scorea=0
+visited=[0]*n
+ans=0
+minn=1e9
+def dfs(level,start):
+  global minn,ans
+  if(level==n//2):
+    scorea=0
+    scoreb=0
+    for i in range (n):
+      for j in range (n):
+        if(visited[i] and visited[j]):
+          scorea+=score[i][j]
+        if(visited[i]==0 and visited[j]==0):
+          scoreb+=score[i][j]
+    ans=abs(scorea-scoreb)
+    minn=min(ans,minn)
+    return
+
+
+  for i in range(start,n):
+
+    if(visited[i]):continue
+    visited[i]=1
+    dfs(level+1,i+1)
+    visited[i]=0
+
+  return minn
+print(dfs(0,0))
+
+1. 일단 조합으로 고침.
+2. 맞긴 하는데 백준에서 이렇게 채점 오래걸리는거 처음봄
+
+n = int(input())
+score=[list(map(int,input().split())) for _ in range(n)]
+visited=[0]*n
+ans=0
+minn=1e9
+def dfs(level,start):
+  global minn,ans
+  if(level==n//2):
+    scorea=0
+    scoreb=0
+    for i in range (n):
+      for j in range (n):
+        if(visited[i] and visited[j]):
+          scorea+=score[i][j]
+        if(visited[i]==0 and visited[j]==0):
+          scoreb+=score[i][j]
+    ans=abs(scorea-scoreb)
+    minn=min(ans,minn)
+    return
+
+
+  for i in range(start,n):
+    visited[i]=1
+    dfs(level+1,i+1)
+    visited[i]=0
+
+  return minn
+
+visited[0]=1
+print(dfs(0,0))
+
+1. a팀에 1 고정시켜서 연산량 반으로 줄이기
