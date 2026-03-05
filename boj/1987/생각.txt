@@ -1,0 +1,70 @@
+import sys
+input = sys.stdin.readline
+
+R, C = map(int, input().split())
+
+grid=[list(input().strip()) for _ in range(R)]
+
+dy=[0,0,1,-1]
+dx=[1,-1,0,0]
+visited=[0]*100
+countt=0
+max_ans=-1e9
+def dfs(y,x):
+  global countt,max_ans
+  if(visited[ord(grid[y][x])]==1):
+    max_ans=max(max_ans,countt)
+    return
+  for i in range(4):
+    ny=y+dy[i]
+    nx=x+dx[i]
+    if(0<=ny<R and 0<=nx<C and visited[ord(grid[y][x])]==0):
+      visited[ord(grid[y][x])]=1
+      countt+=1
+      dfs(ny,nx)
+      countt-=1
+      visited[ord(grid[y][x])]=0
+
+  return max_ans
+
+print(dfs(0,0))
+
+1.테케는 다 통과했는데
+2.또 시간초과 남
+
+import sys
+input = sys.stdin.readline
+
+R, C = map(int, input().split())
+
+grid=[list(input().strip()) for _ in range(R)]
+
+dy=[0,0,1,-1]
+dx=[1,-1,0,0]
+visited=set()
+visited.add(grid[0][0])
+countt=1
+max_ans=1
+def dfs(y,x):
+  global countt,max_ans
+  max_ans=max(max_ans,countt)
+
+  for i in range(4):
+    ny=y+dy[i]
+    nx=x+dx[i]
+    if(0<=ny<R and 0<=nx<C and grid[ny][nx] not in visited):
+      visited.add(grid[ny][nx])
+      countt+=1
+      dfs(ny,nx)
+      countt-=1
+      visited.remove(grid[ny][nx])
+
+dfs(0,0)
+print(max_ans)
+
+1. 그냥 집합을 쭉 흝는게 시간복잡도가 더 낫냐? 아닌거같은데.. 또 시간초과 남
+2. 일단 이경우는 return을 안넣는게 나음. 어차피 격자는 한정되어 있으므로 지가 알아서 끝남.
+
+
+
+그냥 pypy3로 하면 통과하고 python3로 하면 통과를 안하는거였음
