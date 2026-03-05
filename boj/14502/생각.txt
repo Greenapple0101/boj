@@ -1,0 +1,130 @@
+from collections import deque
+n, m = map(int, input().split())
+map_data = [list(map(int, input().split())) for _ in range(n)]
+visited = [[0]*m for _ in range(n)]
+max_ans=0
+dy=[0,0,1,-1]
+dx=[1,-1,0,0]
+
+def bfs(i,j,temp_data):
+  q=deque([(i,j)])
+  visited = [[0]*m for _ in range(n)]
+  visited[i][j]=1
+  while q:
+    y,x=q.popleft()
+    for k in range(4):
+      ny=y+dy[k]
+      nx=x+dx[k]
+      if(0<=ny<n and 0<=nx<m and visited[ny][nx]==0 and temp_data[ny][nx]!=1):
+        temp_data[ny][nx]=2
+        visited[ny][nx]=1
+        q.append((ny,nx))
+
+def island_size(temp_data):
+  sum=0
+  for i in range(n):
+    for j in range(m):
+      if(temp_data[i][j]==2):
+        bfs(i,j,temp_data)
+  for i in range(n):
+    for j in range(m):
+      if(temp_data[i][j]==0):
+        sum+=1
+  return sum
+
+lst=[]
+for i in range(n):
+    for j in range(m):
+      if(map_data[i][j]==0):
+        lst.append((i,j))
+
+visited_d = [0]*len(lst)
+
+def select(cnt,start):
+  global max_ans
+  if(cnt==3): ##이건 트리랑 다르다. cnt는 3이상으로 갈수가 있다
+    temp_map = [row[:] for row in map_data]
+    max_ans=max(max_ans,island_size(temp_map))
+    return
+  for k in range(start,len(lst)):
+      yy,xx=lst[k]
+      if(visited_d[k]==0):
+          visited_d[k]=1
+          map_data[yy][xx]=1
+          select(cnt+1,k+1)
+          visited_d[k]=0
+          map_data[yy][xx]=0
+
+select(0,0)
+print(max_ans)
+
+1. bfs visited 배열 초기화 하는거 잊지말기
+2. 또 시간초과남
+3. 그리고 visited 배열 잘못 설정
+   def island 밑에
+   global visited
+   for r in range(n):
+     for c in range(m):
+        visited[r][c] = 0
+
+    이거 넣었어야함
+
+from collections import deque
+n, m = map(int, input().split())
+map_data = [list(map(int, input().split())) for _ in range(n)]
+visited = [[0]*m for _ in range(n)]
+max_ans=0
+dy=[0,0,1,-1]
+dx=[1,-1,0,0]
+
+def bfs(i,j,temp_data):
+  q=deque([(i,j)])
+  while q:
+    y,x=q.popleft()
+    for k in range(4):
+      ny=y+dy[k]
+      nx=x+dx[k]
+      if(0<=ny<n and 0<=nx<m and temp_data[ny][nx]==0):
+        temp_data[ny][nx]=2
+        q.append((ny,nx))
+
+def island_size(temp_data):
+  sum=0
+  for i in range(n):
+    for j in range(m):
+      if(temp_data[i][j]==2):
+        bfs(i,j,temp_data)
+  for i in range(n):
+    for j in range(m):
+      if(temp_data[i][j]==0):
+        sum+=1
+  return sum
+
+lst=[]
+for i in range(n):
+    for j in range(m):
+      if(map_data[i][j]==0):
+        lst.append((i,j))
+
+visited_d = [0]*len(lst)
+
+def select(cnt,start):
+  global max_ans
+  if(cnt==3): ##이건 트리랑 다르다. cnt는 3이상으로 갈수가 있다
+    temp_map = [row[:] for row in map_data]
+    max_ans=max(max_ans,island_size(temp_map))
+    return
+  for k in range(start,len(lst)):
+      yy,xx=lst[k]
+      if(visited_d[k]==0):
+          visited_d[k]=1
+          map_data[yy][xx]=1
+          select(cnt+1,k+1)
+          visited_d[k]=0
+          map_data[yy][xx]=0
+
+select(0,0)
+print(max_ans)
+
+1.visited 아예 없어도 된다. 어차피 0이면 아직 방문 안한거기때문에
+
