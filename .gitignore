@@ -12,3 +12,7 @@ Makefile
 cmake_install.cmake
 install_manifest.txt
 compile_commands.json
+
+# LeetCode solutions (keep local, exclude from git)
+0001-two-sum/
+0217-contains-duplicate/
