@@ -5,6 +5,7 @@
 | ------- | ------- |
 | [0001-two-sum](https://github.com/Greenapple0101/ps/tree/main/0001-two-sum/) | Easy |
 | [0014-longest-common-prefix](https://github.com/Greenapple0101/ps/tree/main/0014-longest-common-prefix/) | Easy |
+| [0121-best-time-to-buy-and-sell-stock](https://github.com/Greenapple0101/ps/tree/main/0121-best-time-to-buy-and-sell-stock/) | Easy |
 | [0217-contains-duplicate](https://github.com/Greenapple0101/ps/tree/main/0217-contains-duplicate/) | Easy |
 ## Hash Table
 | Problem Name | Difficulty |
@@ -37,4 +38,8 @@
 | Problem Name | Difficulty |
 | ------- | ------- |
 | [0013-roman-to-integer](https://github.com/Greenapple0101/ps/tree/main/0013-roman-to-integer/) | Easy |
+## Dynamic Programming
+| Problem Name | Difficulty |
+| ------- | ------- |
+| [0121-best-time-to-buy-and-sell-stock](https://github.com/Greenapple0101/ps/tree/main/0121-best-time-to-buy-and-sell-stock/) | Easy |
 <!---LeetCode Topics End-->
