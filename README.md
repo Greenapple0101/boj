@@ -5,6 +5,7 @@
 | ------- | ------- |
 | [0001-two-sum](https://github.com/Greenapple0101/ps/tree/main/0001-two-sum/) | Easy |
 | [0014-longest-common-prefix](https://github.com/Greenapple0101/ps/tree/main/0014-longest-common-prefix/) | Easy |
+| [0049-group-anagrams](https://github.com/Greenapple0101/ps/tree/main/0049-group-anagrams/) | Medium |
 | [0121-best-time-to-buy-and-sell-stock](https://github.com/Greenapple0101/ps/tree/main/0121-best-time-to-buy-and-sell-stock/) | Easy |
 | [0217-contains-duplicate](https://github.com/Greenapple0101/ps/tree/main/0217-contains-duplicate/) | Easy |
 ## Hash Table
@@ -13,12 +14,14 @@
 | [0001-two-sum](https://github.com/Greenapple0101/ps/tree/main/0001-two-sum/) | Easy |
 | [0003-longest-substring-without-repeating-characters](https://github.com/Greenapple0101/ps/tree/main/0003-longest-substring-without-repeating-characters/) | Medium |
 | [0013-roman-to-integer](https://github.com/Greenapple0101/ps/tree/main/0013-roman-to-integer/) | Easy |
+| [0049-group-anagrams](https://github.com/Greenapple0101/ps/tree/main/0049-group-anagrams/) | Medium |
 | [0217-contains-duplicate](https://github.com/Greenapple0101/ps/tree/main/0217-contains-duplicate/) | Easy |
 | [0242-valid-anagram](https://github.com/Greenapple0101/ps/tree/main/0242-valid-anagram/) | Easy |
 | [0424-longest-repeating-character-replacement](https://github.com/Greenapple0101/ps/tree/main/0424-longest-repeating-character-replacement/) | Medium |
 ## Sorting
 | Problem Name | Difficulty |
 | ------- | ------- |
+| [0049-group-anagrams](https://github.com/Greenapple0101/ps/tree/main/0049-group-anagrams/) | Medium |
 | [0217-contains-duplicate](https://github.com/Greenapple0101/ps/tree/main/0217-contains-duplicate/) | Easy |
 | [0242-valid-anagram](https://github.com/Greenapple0101/ps/tree/main/0242-valid-anagram/) | Easy |
 ## String
@@ -28,6 +31,7 @@
 | [0005-longest-palindromic-substring](https://github.com/Greenapple0101/ps/tree/main/0005-longest-palindromic-substring/) | Medium |
 | [0013-roman-to-integer](https://github.com/Greenapple0101/ps/tree/main/0013-roman-to-integer/) | Easy |
 | [0014-longest-common-prefix](https://github.com/Greenapple0101/ps/tree/main/0014-longest-common-prefix/) | Easy |
+| [0049-group-anagrams](https://github.com/Greenapple0101/ps/tree/main/0049-group-anagrams/) | Medium |
 | [0125-valid-palindrome](https://github.com/Greenapple0101/ps/tree/main/0125-valid-palindrome/) | Easy |
 | [0242-valid-anagram](https://github.com/Greenapple0101/ps/tree/main/0242-valid-anagram/) | Easy |
 | [0424-longest-repeating-character-replacement](https://github.com/Greenapple0101/ps/tree/main/0424-longest-repeating-character-replacement/) | Medium |
