@@ -8,6 +8,7 @@
 | [0049-group-anagrams](https://github.com/Greenapple0101/ps/tree/main/0049-group-anagrams/) | Medium |
 | [0121-best-time-to-buy-and-sell-stock](https://github.com/Greenapple0101/ps/tree/main/0121-best-time-to-buy-and-sell-stock/) | Easy |
 | [0217-contains-duplicate](https://github.com/Greenapple0101/ps/tree/main/0217-contains-duplicate/) | Easy |
+| [0238-product-of-array-except-self](https://github.com/Greenapple0101/ps/tree/main/0238-product-of-array-except-self/) | Medium |
 ## Hash Table
 | Problem Name | Difficulty |
 | ------- | ------- |
@@ -58,4 +59,8 @@
 | ------- | ------- |
 | [0003-longest-substring-without-repeating-characters](https://github.com/Greenapple0101/ps/tree/main/0003-longest-substring-without-repeating-characters/) | Medium |
 | [0424-longest-repeating-character-replacement](https://github.com/Greenapple0101/ps/tree/main/0424-longest-repeating-character-replacement/) | Medium |
+## Prefix Sum
+| Problem Name | Difficulty |
+| ------- | ------- |
+| [0238-product-of-array-except-self](https://github.com/Greenapple0101/ps/tree/main/0238-product-of-array-except-self/) | Medium |
 <!---LeetCode Topics End-->
