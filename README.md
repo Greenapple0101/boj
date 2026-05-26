@@ -32,6 +32,7 @@
 | [0005-longest-palindromic-substring](https://github.com/Greenapple0101/ps/tree/main/0005-longest-palindromic-substring/) | Medium |
 | [0013-roman-to-integer](https://github.com/Greenapple0101/ps/tree/main/0013-roman-to-integer/) | Easy |
 | [0014-longest-common-prefix](https://github.com/Greenapple0101/ps/tree/main/0014-longest-common-prefix/) | Easy |
+| [0020-valid-parentheses](https://github.com/Greenapple0101/ps/tree/main/0020-valid-parentheses/) | Easy |
 | [0049-group-anagrams](https://github.com/Greenapple0101/ps/tree/main/0049-group-anagrams/) | Medium |
 | [0125-valid-palindrome](https://github.com/Greenapple0101/ps/tree/main/0125-valid-palindrome/) | Easy |
 | [0242-valid-anagram](https://github.com/Greenapple0101/ps/tree/main/0242-valid-anagram/) | Easy |
@@ -63,4 +64,8 @@
 | Problem Name | Difficulty |
 | ------- | ------- |
 | [0238-product-of-array-except-self](https://github.com/Greenapple0101/ps/tree/main/0238-product-of-array-except-self/) | Medium |
+## Stack
+| Problem Name | Difficulty |
+| ------- | ------- |
+| [0020-valid-parentheses](https://github.com/Greenapple0101/ps/tree/main/0020-valid-parentheses/) | Easy |
 <!---LeetCode Topics End-->
